@@ -1,0 +1,16 @@
+steps:
+  # Build the Docker image
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'gcr.io/devops-test-385312/weather-app-test:latest', '.']
+
+  # Push the Docker image to Container Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'gcr.io/devops-test-385312/weather-app-test:latest']
+
+  # Deploy the application to Cloud Run
+  - name: 'gcr.io/cloud-builders/gcloud'
+    args: ['run', 'deploy', 'weather-service', '--image', 'gcr.io/devops-test-385312/weather-app-test:latest', '--platform', 'managed', '--region', 'us-central1']
+
+images:
+  # Specify the Docker image to be stored after the build
+  - 'devops-test-385312/weather-app-test:latest'
